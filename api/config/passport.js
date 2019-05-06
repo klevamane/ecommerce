@@ -8,13 +8,13 @@ const secretKey = 'secretKey';
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = secretKey;
+// opts.passReqToCallback = true;
 
 module.exports = (passport) => {
-  passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+  passport.use(new JwtStrategy(opts,  (jwt_payload, done) => {
     Customer.findByPk(jwt_payload.customer_id)
       .then((user) => {
         // check if the user has been found
-
         if (user) {
           return done(null, user);
         }

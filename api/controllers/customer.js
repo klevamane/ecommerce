@@ -5,7 +5,21 @@ import Sequelize from 'sequelize';
 
 // user defined imports
 import { Customer } from '../models';
-import { validateRegisterCustomer, validateCustomerLogin, validateCustomerUpdate } from '../validators/customer';
+import {
+  validateRegisterCustomer,
+  validateCustomerLogin,
+  validateCustomerUpdate,
+  validateCustomerAddressUpdate
+} from '../validators/customer';
+import validateCustomerCreditCard from '../validators/customer/validate-creditcard';
+
+const filterEditableAttributes = (unchangedRequestObject, editableAttributes) => {
+  Object.keys(unchangedRequestObject).forEach((key) => {
+    if (!editableAttributes.includes(key)) {
+      delete unchangedRequestObject[key];
+    }
+  });
+};
 
 /**
  * Class representing customers
@@ -101,7 +115,7 @@ export default class CustomerController {
       .then(customer => res.json({ customer }))
       .catch(err => res.status(400).json(err));
   }
-  
+
   /**
    * @description Update the details of a customer
    * @param {*} req - Request object
@@ -110,8 +124,14 @@ export default class CustomerController {
    */
   static async updateCustomerDetails(req, res) {
     const customerId = req.user.customer_id;
+    const editableAttributes = ['name', 'email', 'password', 'day_phone', 'eve_phone', 'mob_phone'];
+
     // Spread the request body to remove reference upon change
     const unchangedRequestObject = { ...req.body };
+
+    // Remove attributes in the object that should not be editable based on the route
+    filterEditableAttributes(unchangedRequestObject, editableAttributes);
+
     const { errors, isValid } = validateCustomerUpdate(req.body);
     if (!isValid) {
       return res.status(400).json(errors);
@@ -122,12 +142,13 @@ export default class CustomerController {
       try {
         const customerExist = await Customer.findOne({ where: { email: req.body.email } });
         if (customerExist) {
-          return res.status(400).json({ error: {
-            status: 400,
-            code: 'USR_04',
-            message: 'The email already exists.',
-            field: 'email'
-          }
+          return res.status(400).json({
+            error: {
+              status: 400,
+              code: 'USR_04',
+              message: 'The email already exists.',
+              field: 'email'
+            }
           });
         }
       } catch (err) { console.log(err); }
@@ -147,4 +168,70 @@ export default class CustomerController {
       })
       .catch(err => console.log(err));
   }
+
+  /**
+   * @description Update the address of a customer
+   * @param {*} req - Request object
+   * @param {*} res - Response object
+   * @returns {object} An object containing the user data and token
+   */
+  static UpdateCustomerAddress(req, res) {
+    const customerId = req.user.customer_id;
+    const editableAttributes = ['address_1', 'address_2', 'city', 'region', 'postal_code', 'country', 'shipping_region_id'];
+
+    // Spread the request body to remove reference upon change
+    const unchangedRequestObject = { ...req.body };
+
+    // Remove attributes in the object that should not be editable based on the route
+    filterEditableAttributes(unchangedRequestObject, editableAttributes);
+    const { errors, isValid } = validateCustomerAddressUpdate(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Customer.update(unchangedRequestObject, { where: { customer_id: customerId } })
+      .then((updatedCustomer) => {
+        if (updatedCustomer) {
+          // sequelize returns data upon update only with postrest
+          // using returning=true, for mysql, we need to use a seperate find
+          Customer.findOne({ where: { customer_id: customerId }, attributes: { exclude: ['password'] } })
+            // Customer.findByPk(customerId, { attributes: { exclude: ['password'] } })
+            .then(customer => res.json({ customer }))
+            .catch(err => res.status(400).json(err));
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  /**
+   * @description Update the credit card of a customer
+   * @param {*} req - Request object
+   * @param {*} res - Response object
+   * @returns {object} An object containing the user data and token
+   */
+  static UpdatCustomerCreditCard(req, res) {
+    const customerId = req.user.customer_id;
+
+    const { errors, isValid } = validateCustomerCreditCard(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Customer.update({ credit_card: req.body.credit_card }, { where: { customer_id: customerId } })
+      .then((updatedCustomer) => {
+        if (updatedCustomer) {
+        // sequelize returns data upon update only with postrest
+        // using returning=true, for mysql, we need to use a seperate find
+          Customer.findOne({ where: { customer_id: customerId }, attributes: { exclude: ['password'] } })
+          // Customer.findByPk(customerId, { attributes: { exclude: ['password'] } })
+            .then(customer => res.json({ customer }))
+            .catch(err => res.status(400).json(err));
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  static nuu(req, res) {
+   return res.json({ message: 'Happening'})
+        }
 }
