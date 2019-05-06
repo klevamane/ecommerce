@@ -1,11 +1,12 @@
 /* eslint-disable func-names */
 /* jshint indent: 2 */
 
-module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('customer', {
+module.exports = (sequelize, DataTypes) => {
+  const Customer = sequelize.define('Customer', {
     customer_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true
     },
     name: {
@@ -67,6 +68,13 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'customer'
+    tableName: 'customer',
+    timestamps: false,
+    hooks: {
+      afterCreate: (instance, options) => {
+        delete instance.dataValues.password;
+      }
+    }
   });
+  return Customer;
 };
