@@ -1,8 +1,9 @@
 /* eslint-disable func-names */
 /* jshint indent: 2 */
+import { Category } from '.';
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('product', {
+  const Product = sequelize.define('Product', {
     product_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -45,4 +46,8 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     tableName: 'product'
   });
+  Product.associate = (models) => {
+    Product.belongsToMany(models.Category, { through: 'ProductCategory', foreignKey: 'product_id', as: 'categories' });
+  };
+  return Product;
 };

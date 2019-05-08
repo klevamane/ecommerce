@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('product_category', {
+  return sequelize.define('ProductCategory', {
     product_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     }
   }, {
-    tableName: 'product_category'
+    tableName: 'product_category',
+    timestamps: false
   });
 };

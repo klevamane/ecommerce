@@ -2,7 +2,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('category', {
+  const Category = sequelize.define('Category', {
     category_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -21,6 +21,14 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'category'
+    tableName: 'category',
+    timestamps: false,
+
   });
+
+  Category.associate = (models) => {
+    Category.belongsToMany(models.Product, { through: 'ProductCategory', foreignKey: 'category_id', as: 'products' });
+  };
+
+  return Category;
 };

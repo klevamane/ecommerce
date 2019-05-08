@@ -71,6 +71,8 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'customer',
     timestamps: false,
     hooks: {
+      // Delete the password to ensure that it wont be returned
+      // as a response
       afterCreate: (instance, options) => {
         delete instance.dataValues.password;
       }

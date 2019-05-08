@@ -5,6 +5,8 @@ import Sequelize from 'sequelize';
 
 // user defined imports
 import { Customer } from '../models';
+import { filterEditableAttributes } from '../helpers/functions';
+
 import {
   validateRegisterCustomer,
   validateCustomerLogin,
@@ -12,14 +14,6 @@ import {
   validateCustomerAddressUpdate
 } from '../validators/customer';
 import validateCustomerCreditCard from '../validators/customer/validate-creditcard';
-
-const filterEditableAttributes = (unchangedRequestObject, editableAttributes) => {
-  Object.keys(unchangedRequestObject).forEach((key) => {
-    if (!editableAttributes.includes(key)) {
-      delete unchangedRequestObject[key];
-    }
-  });
-};
 
 /**
  * Class representing customers
@@ -78,14 +72,17 @@ export default class CustomerController {
       .then((customer) => {
         if (!customer) {
           return res.status(400).json({
-            code: 'USR_05',
-            message: "The email doesn't not exists",
-            field: 'email'
+            error: {
+              status: 400,
+              code: 'USR_05',
+              message: "The email doesn't not exists",
+              field: 'email'
+            }
           });
         }
         bcryptjs.compare(req.body.password, customer.password, (err, result) => {
           if (result) {
-            const signedToken = jwt.sign({ customer_id: customer.customer_id, email: customer.email }, 'secretKey', { expiresIn: '2h' });
+            const signedToken = jwt.sign({ customer_id: customer.customer_id, email: customer.email }, 'secretKey', { expiresIn: '23h' });
             delete customer.dataValues.password;
             return res.status(200).json({
               customer: {
@@ -211,7 +208,6 @@ export default class CustomerController {
    */
   static UpdatCustomerCreditCard(req, res) {
     const customerId = req.user.customer_id;
-
     const { errors, isValid } = validateCustomerCreditCard(req.body);
     if (!isValid) {
       return res.status(400).json(errors);
@@ -230,8 +226,4 @@ export default class CustomerController {
       })
       .catch(err => console.log(err));
   }
-
-  static nuu(req, res) {
-   return res.json({ message: 'Happening'})
-        }
 }

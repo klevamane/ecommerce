@@ -1,4 +1,4 @@
-import Validiator from 'validator';
+import Validator from 'validator';
 import { isEmpty } from 'lodash';
 
 const pattern = /^[a-zA-Z ]+$/;
@@ -10,7 +10,7 @@ export const validateRegisterCustomer = (data) => {
   data.email = isEmpty(data.email) === true ? '' : data.email;
   data.password = isEmpty(data.password) === true ? '' : data.password;
 
-  if (Validiator.isEmpty(data.name)) {
+  if (Validator.isEmpty(data.name)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -21,7 +21,7 @@ export const validateRegisterCustomer = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.name)) {
+  if (Validator.isEmpty(data.name)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -31,7 +31,7 @@ export const validateRegisterCustomer = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.is(data.name)) {
+  if (Validator.is(data.name)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -42,7 +42,7 @@ export const validateRegisterCustomer = (data) => {
   }
 
 
-  if (Validiator.isEmpty(data.email)) {
+  if (Validator.isEmpty(data.email)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -52,7 +52,7 @@ export const validateRegisterCustomer = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (!Validiator.isEmail(data.email)) {
+  if (!Validator.isEmail(data.email)) {
     errors = {
       status: 400,
       code: 'USR_03',
@@ -72,7 +72,7 @@ export const validateCustomerLogin = (data) => {
   data.password = isEmpty(data.password) === true ? '' : data.password;
   data.email = isEmpty(data.email) === true ? '' : data.email;
 
-  if (Validiator.isEmpty(data.email)) {
+  if (Validator.isEmpty(data.email)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -82,7 +82,7 @@ export const validateCustomerLogin = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.password)) {
+  if (Validator.isEmpty(data.password)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -99,7 +99,6 @@ export const validateCustomerLogin = (data) => {
 };
 
 export const validateCustomerUpdate = (data) => {
-  
   let errors = {};
   data.name = isEmpty(data.name) === true ? '' : data.name;
   data.email = isEmpty(data.email) === true ? '' : data.email;
@@ -110,7 +109,7 @@ export const validateCustomerUpdate = (data) => {
 
   // data.day = isEmpty(data.shipping_region_id) === true ? '' : data.shipping_region_id;
 
-  if (Validiator.isEmpty(data.name)) {
+  if (Validator.isEmpty(data.name)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -130,7 +129,7 @@ export const validateCustomerUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.email)) {
+  if (Validator.isEmpty(data.email)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -140,7 +139,7 @@ export const validateCustomerUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (!Validiator.isEmail(data.email)) {
+  if (!Validator.isEmail(data.email)) {
     errors = {
       status: 400,
       code: 'USR_03',
@@ -151,7 +150,7 @@ export const validateCustomerUpdate = (data) => {
   }
 
 
-  if (!Validiator.isMobilePhone(data.mob_phone, ['en-US']) && !Validiator.isEmpty(data.mob_phone)) {
+  if (!Validator.isMobilePhone(data.mob_phone, ['en-US']) && !Validator.isEmpty(data.mob_phone)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -178,7 +177,7 @@ export const validateCustomerAddressUpdate = (data) => {
   data.country = isEmpty(data.country) === true ? '' : data.country;
   data.shipping_region_id = isEmpty(data.shipping_region_id) === true ? '' : data.shipping_region_id;
 
-  if (Validiator.isEmpty(data.address_1)) {
+  if (Validator.isEmpty(data.address_1)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -188,7 +187,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.city)) {
+  if (Validator.isEmpty(data.city)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -198,7 +197,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.city)) {
+  if (Validator.isEmpty(data.city)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -208,7 +207,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.city)) {
+  if (Validator.isEmpty(data.city)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -228,7 +227,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.region)) {
+  if (Validator.isEmpty(data.region)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -248,7 +247,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.postal_code)) {
+  if (Validator.isEmpty(data.postal_code)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -258,7 +257,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.country)) {
+  if (Validator.isEmpty(data.country)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -278,7 +277,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (Validiator.isEmpty(data.shipping_region_id)) {
+  if (Validator.isEmpty(data.shipping_region_id)) {
     errors = {
       status: 400,
       code: 'USR_02',
@@ -288,7 +287,7 @@ export const validateCustomerAddressUpdate = (data) => {
     return { errors, isValid: isEmpty(errors) };
   }
 
-  if (!Validiator.isNumeric(data.shipping_region_id)) {
+  if (!Validator.isNumeric(data.shipping_region_id)) {
     errors = {
       status: 400,
       code: 'USR_02',
