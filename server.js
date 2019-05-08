@@ -11,6 +11,7 @@ import CustomerRoutes from './api/routes/customer';
 import CustomerEntityRoutes from './api/routes/customer_entity';
 import DepartmentRoutes from './api/routes/departments';
 import CategoryRoutes from './api/routes/category';
+import ProductRoutes from './api/routes/product';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -36,6 +37,7 @@ app.use('/api/v1/customers', CustomerRoutes);
 app.use('/api/v1/customer', CustomerEntityRoutes);
 app.use('/api/v1/departments', DepartmentRoutes);
 app.use('/api/v1/categories', CategoryRoutes);
+app.use('/api/v1/products', ProductRoutes);
 
 
 app.listen(port, () => console.log(`The server is running on port ${port}`));

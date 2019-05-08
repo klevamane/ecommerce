@@ -44,7 +44,8 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: '0'
     }
   }, {
-    tableName: 'product'
+    tableName: 'product',
+    timestamps: false
   });
   Product.associate = (models) => {
     Product.belongsToMany(models.Category, { through: 'ProductCategory', foreignKey: 'product_id', as: 'categories' });
