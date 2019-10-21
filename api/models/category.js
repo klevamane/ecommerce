@@ -6,7 +6,8 @@ module.exports = function (sequelize, DataTypes) {
     category_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     department_id: {
       type: DataTypes.INTEGER(11),
@@ -28,6 +29,7 @@ module.exports = function (sequelize, DataTypes) {
 
   Category.associate = (models) => {
     Category.belongsToMany(models.Product, { through: 'ProductCategory', foreignKey: 'category_id', as: 'products' });
+    Category.belongsTo(models.Department, { foreignKey: 'department_id', onDelete: 'CASCADE' });
   };
 
   return Category;

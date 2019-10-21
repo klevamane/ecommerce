@@ -1,11 +1,13 @@
 /* jshint indent: 2 */
+/* eslint-disable func-names */
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('shopping_cart', {
+module.exports = function (sequelize, DataTypes) {
+  const ShoppingCart = sequelize.define('ShoppingCart', {
     item_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     cart_id: {
       type: DataTypes.CHAR(32),
@@ -33,6 +35,9 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'shopping_cart'
+    tableName: 'shopping_cart',
+    timestamps: false
   });
+
+  return ShoppingCart;
 };

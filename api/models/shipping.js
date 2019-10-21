@@ -1,11 +1,13 @@
 /* jshint indent: 2 */
+/* eslint-disable func-names */
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('shipping', {
+module.exports = function (sequelize, DataTypes) {
+  const Shipping = sequelize.define('shipping', {
     shipping_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     shipping_type: {
       type: DataTypes.STRING(100),
@@ -20,6 +22,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'shipping'
+    tableName: 'shipping',
+    timestamps: false
   });
+  return Shipping;
 };

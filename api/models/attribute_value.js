@@ -2,11 +2,12 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('attribute_value', {
+  const AttributeValue = sequelize.define('AttributeValue', {
     attribute_value_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     attribute_id: {
       type: DataTypes.INTEGER(11),
@@ -17,6 +18,13 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'attribute_value'
+    tableName: 'attribute_value',
+    timestamps: false
   });
+
+  AttributeValue.associate = (models) => {
+    AttributeValue.belongsToMany(models.Product, { through: 'ProductAttribute', foreignKey: 'attribute_value_id', as: 'products' });
+    AttributeValue.belongsTo(models.Attribute, { foreignKey: 'attribute_id', onDelete: 'CASCADE' });
+  };
+  return AttributeValue;
 };

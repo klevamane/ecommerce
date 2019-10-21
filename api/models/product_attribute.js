@@ -2,11 +2,12 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('product_attribute', {
+  const ProductAttribute = sequelize.define('ProductAttribute', {
     product_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     attribute_value_id: {
       type: DataTypes.INTEGER(11),
@@ -14,6 +15,8 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true
     }
   }, {
-    tableName: 'product_attribute'
+    tableName: 'product_attribute',
+    timestamps: false
   });
+  return ProductAttribute;
 };

@@ -2,11 +2,12 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('tax', {
+  const Tax = sequelize.define('Tax', {
     tax_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     tax_type: {
       type: DataTypes.STRING(100),
@@ -17,6 +18,8 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'tax'
+    tableName: 'tax',
+    timestamps: false
   });
+  return Tax;
 };

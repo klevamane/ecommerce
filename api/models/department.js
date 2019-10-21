@@ -2,11 +2,12 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('Department', {
+  const Department = sequelize.define('Department', {
     department_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING(100),
@@ -20,4 +21,10 @@ module.exports = function (sequelize, DataTypes) {
     tableName: 'department',
     timestamps: false,
   });
+
+  Department.associate = (models) => {
+    Department.hasMany(models.Category, { foreignKey: 'department_id', onDelete: 'CASCADE' });
+  };
+
+  return Department;
 };

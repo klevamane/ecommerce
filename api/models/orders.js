@@ -2,11 +2,13 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('orders', {
+  const Orders = sequelize.define('Orders', {
     order_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
+
     },
     total_amount: {
       type: DataTypes.DECIMAL,
@@ -51,6 +53,15 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'orders'
+    tableName: 'orders',
+    timestamps: false
   });
+
+  Orders.associate = (models) => {
+    Orders.belongsTo(models.Customer, {
+      foreignKey: 'customer_id',
+      onDelete: 'CASCADE'
+    });
+  };
+  return Orders;
 };

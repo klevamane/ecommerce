@@ -1,13 +1,13 @@
 /* eslint-disable func-names */
 /* jshint indent: 2 */
-import { Category } from '.';
 
 module.exports = function (sequelize, DataTypes) {
   const Product = sequelize.define('Product', {
     product_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.STRING(100),
@@ -49,6 +49,9 @@ module.exports = function (sequelize, DataTypes) {
   });
   Product.associate = (models) => {
     Product.belongsToMany(models.Category, { through: 'ProductCategory', foreignKey: 'product_id', as: 'categories' });
+    Product.belongsToMany(models.AttributeValue, { through: 'ProductAttribute', foreignKey: 'product_id', as: 'attributevalue' });
+    // Product.hasMany(models.Attribute, { through: 'ProductAttribute' });
+    Product.hasMany(models.Review, { foreignKey: 'product_id', onDelete: 'CASCADE' });
   };
   return Product;
 };

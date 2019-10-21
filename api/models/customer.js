@@ -78,5 +78,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
+  Customer.associate = (models) => {
+    Customer.hasMany(models.Review, { foreignKey: 'customer_id', onDelete: 'CASCADE' });
+    Customer.hasMany(models.Orders, { foreignKey: 'customer_id', onDelete: 'CASCADE' });
+  };
   return Customer;
 };

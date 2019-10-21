@@ -12,6 +12,11 @@ import CustomerEntityRoutes from './api/routes/customer_entity';
 import DepartmentRoutes from './api/routes/departments';
 import CategoryRoutes from './api/routes/category';
 import ProductRoutes from './api/routes/product';
+import AttributeRoutes from './api/routes/attributes';
+import ShippingRegionRoutes from './api/routes/shipping-region';
+import TaxRoutes from './api/routes/tax';
+import ShoppingCartRoutes from './api/routes/shoppingCart';
+import OrdersRoutes from './api/routes/orders';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -33,11 +38,17 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'You have arrived' });
 });
 
+
 app.use('/api/v1/customers', CustomerRoutes);
 app.use('/api/v1/customer', CustomerEntityRoutes);
 app.use('/api/v1/departments', DepartmentRoutes);
 app.use('/api/v1/categories', CategoryRoutes);
 app.use('/api/v1/products', ProductRoutes);
+app.use('/api/v1/attributes', AttributeRoutes);
+app.use('/api/v1/shipping', ShippingRegionRoutes);
+app.use('/api/v1/tax', TaxRoutes);
+app.use('/api/v1/shoppingcart', ShoppingCartRoutes);
+app.use('/api/v1/orders', OrdersRoutes);
 
 
 app.listen(port, () => console.log(`The server is running on port ${port}`));

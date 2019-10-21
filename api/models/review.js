@@ -1,10 +1,11 @@
 /* jshint indent: 2 */
-
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('review', {
+// eslint-disable-next-line func-names
+module.exports = function (sequelize, DataTypes) {
+  const Review = sequelize.define('Review', {
     review_id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true
     },
     customer_id: {
@@ -28,6 +29,19 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'review'
+    tableName: 'review',
+    timestamps: false
   });
+  Review.associate = (models) => {
+    Review.belongsTo(models.Product, {
+      foreignKey: 'product_id',
+      onDelete: 'CASCADE'
+    });
+
+    Review.belongsTo(models.Customer, {
+      foreignKey: 'customer_id',
+      onDelete: 'CASCADE'
+    });
+  };
+  return Review;
 };
